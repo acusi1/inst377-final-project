@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Customer Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Customer Dashboard</h1>
+
+<nav>
+  <a href="/index.html">Home</a>
+  <a href="/about.html">About</a>
+  <a href="/dashboard.html">Dashboard</a>
+</nav>
+
+<hr>
+
+<h2>Add Customer</h2>
+
+<input id="firstName" placeholder="First Name">
+<input id="lastName" placeholder="Last Name">
+<input id="state" placeholder="State (MD)">
+
+<button onclick="addCustomer()">Add Customer</button>
+
+<h2>Customers</h2>
+<button onclick="loadCustomers()">Load Customers</button>
+<ul id="customerList"></ul>
+
+<h2>Random Fact</h2>
+<button onclick="getFact()">Get Fact</button>
+<p id="fact"></p>
+
+<script src="dashboard.js"></script>
+</body>
+</html>
