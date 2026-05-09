@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <h1>Customer Dashboard</h1>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="project.html">Dashboard</a>
+  </nav>
+
+  <h2>Add Customer</h2>
+
+  <input id="firstName" placeholder="First Name">
+  <input id="lastName" placeholder="Last Name">
+  <input id="state" placeholder="State (MD, VA, etc)">
+  <button onclick="addCustomer()">Add</button>
+
+  <h2>Customers</h2>
+  <button onclick="loadCustomers()">Load Customers</button>
+  <div id="customerList"></div>
+
+  <h2>Random Fact (External API)</h2>
+  <button onclick="getFact()">Get Fact</button>
+  <p id="fact"></p>
+
+  <h2>Customer Chart</h2>
+  <canvas id="chart"></canvas>
+
+  <script src="app.js"></script>
+</body>
+</html>
