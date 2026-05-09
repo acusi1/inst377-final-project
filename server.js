@@ -1,34 +1,40 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const { createClient } = require('@supabase/supabase-js');
 const cors = require('cors');
+const { createClient } = require('@supabase/supabase-js');
+const { isValidStateAbbreviation } = require('usa-state-validator');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
-app.use(bodyParser.json());
-app.use(express.static('public'));
 app.use(cors());
+app.use(express.json());
+app.use(express.static('public'));
 
-// Supabase setup (MOVE KEY TO .env in final submission)
-const supabaseUrl = 'https://ekrqvjzsegifqcsupijl.supabase.co';
+// Supabase
+const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
-
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-/* -------------------- SUPABASE ENDPOINTS -------------------- */
-
-// GET customers
+// ---------------- GET ALL CUSTOMERS ----------------
 app.get('/customers', async (req, res) => {
   const { data, error } = await supabase.from('customer').select();
 
   if (error) return res.status(500).json(error);
+
   res.json(data);
 });
 
-// POST customer
+// ---------------- ADD CUSTOMER ----------------
 app.post('/customer', async (req, res) => {
   const { firstName, lastName, state } = req.body;
+
+  if (!firstName || !lastName || !state) {
+    return res.status(400).json({ message: 'Missing fields' });
+  }
+
+  if (!isValidStateAbbreviation(state)) {
+    return res.status(400).json({ message: 'Invalid state' });
+  }
 
   const { data, error } = await supabase
     .from('customer')
@@ -42,25 +48,18 @@ app.post('/customer', async (req, res) => {
     .select();
 
   if (error) return res.status(500).json(error);
+
   res.json(data);
 });
 
-/* -------------------- EXTERNAL API (REQUIRED) -------------------- */
+// ---------------- RANDOM FACT (External API requirement) ----------------
+app.get('/fact', async (req, res) => {
+  const response = await fetch('https://uselessfacts.jsph.pl/random.json?language=en');
+  const data = await response.json();
 
-app.get('/random-fact', async (req, res) => {
-  try {
-    const response = await fetch(
-      'https://uselessfacts.jsph.pl/random.json?language=en'
-    );
-    const data = await response.json();
-    res.json(data);
-  } catch (err) {
-    res.status(500).json({ error: 'External API failed' });
-  }
+  res.json(data);
 });
 
-/* -------------------- START SERVER -------------------- */
-
 app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+  console.log(`Server running on port ${port}`);
 });
