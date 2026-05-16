@@ -8,25 +8,23 @@ const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
-
-// IMPORTANT: this fixes /public errors
 app.use(express.static('public'));
 
-// Supabase
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_KEY
+);
 
-// ---------------- GET CUSTOMERS ----------------
+// GET customers
 app.get('/customers', async (req, res) => {
-  const { data, error } = await supabase.from('customer').select();
+  const { data, error } = await supabase.from('customer').select('*');
 
   if (error) return res.status(500).json(error);
 
   res.json(data);
 });
 
-// ---------------- ADD CUSTOMER ----------------
+// POST customer
 app.post('/customer', async (req, res) => {
   const { firstName, lastName, state } = req.body;
 
@@ -35,7 +33,9 @@ app.post('/customer', async (req, res) => {
   }
 
   if (!isValidStateAbbreviation(state)) {
-    return res.status(400).json({ message: 'Invalid state abbreviation' });
+    return res.status(400).json({
+      message: 'Invalid state abbreviation'
+    });
   }
 
   const { data, error } = await supabase
@@ -54,9 +54,12 @@ app.post('/customer', async (req, res) => {
   res.json(data);
 });
 
-// ---------------- EXTERNAL API (REQUIRED) ----------------
+// External API
 app.get('/fact', async (req, res) => {
-  const response = await fetch('https://uselessfacts.jsph.pl/random.json?language=en');
+  const response = await fetch(
+    'https://uselessfacts.jsph.pl/random.json?language=en'
+  );
+
   const data = await response.json();
   res.json(data);
 });

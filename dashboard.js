@@ -1,15 +1,21 @@
-const API = "http://localhost:3000";
+const API = "";
 
-// ---------------- ADD CUSTOMER ----------------
+// ADD CUSTOMER
 async function addCustomer() {
-  const firstName = document.getElementById('firstName').value;
-  const lastName = document.getElementById('lastName').value;
-  const state = document.getElementById('state').value;
+  const firstName = document.getElementById("firstName").value;
+  const lastName = document.getElementById("lastName").value;
+  const state = document.getElementById("state").value.toUpperCase();
 
   const res = await fetch(`${API}/customer`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ firstName, lastName, state })
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      firstName,
+      lastName,
+      state
+    })
   });
 
   const data = await res.json();
@@ -19,10 +25,11 @@ async function addCustomer() {
     return;
   }
 
-  await loadCustomers(); // 🔥 THIS FIXES “NOTHING HAPPENS”
+  alert("Customer added successfully!");
+  loadCustomers();
 }
 
-// ---------------- LOAD CUSTOMERS ----------------
+// LOAD CUSTOMERS
 async function loadCustomers() {
   const res = await fetch(`${API}/customers`);
   const data = await res.json();
@@ -30,14 +37,15 @@ async function loadCustomers() {
   const list = document.getElementById("customerList");
   list.innerHTML = "";
 
-  data.forEach(c => {
+  data.forEach(customer => {
     const li = document.createElement("li");
-    li.textContent = `${c.customer_first_name} ${c.customer_last_name} - ${c.customer_state}`;
+    li.textContent =
+      `${customer.customer_first_name} ${customer.customer_last_name} - ${customer.customer_state}`;
     list.appendChild(li);
   });
 }
 
-// ---------------- RANDOM FACT ----------------
+// RANDOM FACT
 async function getFact() {
   const res = await fetch(`${API}/fact`);
   const data = await res.json();
