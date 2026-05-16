@@ -1,10 +1,10 @@
 const API = "http://localhost:3000";
 
-// ---------------- ADD CUSTOMER ----------------
+// ADD CUSTOMER
 async function addCustomer() {
-  const firstName = document.getElementById('firstName').value;
-  const lastName = document.getElementById('lastName').value;
-  const state = document.getElementById('state').value;
+  const firstName = document.getElementById("firstName").value;
+  const lastName = document.getElementById("lastName").value;
+  const state = document.getElementById("state").value.toUpperCase();
 
   const res = await fetch(`${API}/customer`, {
     method: "POST",
@@ -15,14 +15,14 @@ async function addCustomer() {
   const data = await res.json();
 
   if (!res.ok) {
-    alert(data.message);
+    alert(data.message || "Error adding customer");
     return;
   }
 
-  await loadCustomers(); // 🔥 THIS FIXES “NOTHING HAPPENS”
+  loadCustomers();
 }
 
-// ---------------- LOAD CUSTOMERS ----------------
+// LOAD CUSTOMERS
 async function loadCustomers() {
   const res = await fetch(`${API}/customers`);
   const data = await res.json();
@@ -37,10 +37,15 @@ async function loadCustomers() {
   });
 }
 
-// ---------------- RANDOM FACT ----------------
+// RANDOM FACT
 async function getFact() {
   const res = await fetch(`${API}/fact`);
   const data = await res.json();
 
   document.getElementById("fact").innerText = data.text;
 }
+
+// IMPORTANT FIX (THIS WAS BREAKING YOUR BUTTONS)
+window.addCustomer = addCustomer;
+window.loadCustomers = loadCustomers;
+window.getFact = getFact;

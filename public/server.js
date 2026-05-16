@@ -1,45 +1,49 @@
-const express = require('express');
-const cors = require('cors');
-const { createClient } = require('@supabase/supabase-js');
-const { isValidStateAbbreviation } = require('usa-state-validator');
+const express = require("express");
+const cors = require("cors");
+const { createClient } = require("@supabase/supabase-js");
+const { isValidStateAbbreviation } = require("usa-state-validator");
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static("public"));
 
-// IMPORTANT: this fixes /public errors
-app.use(express.static('public'));
+// SUPABASE (YOUR FIXED CONNECTION)
+const supabase = createClient(
+  "https://xpnrvbnbrpsipugjmofz.supabase.co",
+  "sb_publishable_a3zqQ7PdFrXZd11ebckrUg_FkptJ03z"
+);
 
-// Supabase
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
+// TEST
+app.get("/", (req, res) => {
+  res.send("Server is running");
+});
 
-// ---------------- GET CUSTOMERS ----------------
-app.get('/customers', async (req, res) => {
-  const { data, error } = await supabase.from('customer').select();
+// GET CUSTOMERS
+app.get("/customers", async (req, res) => {
+  const { data, error } = await supabase.from("customer").select("*");
 
   if (error) return res.status(500).json(error);
 
   res.json(data);
 });
 
-// ---------------- ADD CUSTOMER ----------------
-app.post('/customer', async (req, res) => {
+// ADD CUSTOMER
+app.post("/customer", async (req, res) => {
   const { firstName, lastName, state } = req.body;
 
   if (!firstName || !lastName || !state) {
-    return res.status(400).json({ message: 'Missing fields' });
+    return res.status(400).json({ message: "Missing fields" });
   }
 
   if (!isValidStateAbbreviation(state)) {
-    return res.status(400).json({ message: 'Invalid state abbreviation' });
+    return res.status(400).json({ message: "Invalid state abbreviation" });
   }
 
   const { data, error } = await supabase
-    .from('customer')
+    .from("customer")
     .insert([
       {
         customer_first_name: firstName,
@@ -54,11 +58,17 @@ app.post('/customer', async (req, res) => {
   res.json(data);
 });
 
-// ---------------- EXTERNAL API (REQUIRED) ----------------
-app.get('/fact', async (req, res) => {
-  const response = await fetch('https://uselessfacts.jsph.pl/random.json?language=en');
-  const data = await response.json();
-  res.json(data);
+// RANDOM FACT
+app.get("/fact", async (req, res) => {
+  try {
+    const response = await fetch(
+      "https://uselessfacts.jsph.pl/random.json?language=en"
+    );
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching fact" });
+  }
 });
 
 app.listen(port, () => {
