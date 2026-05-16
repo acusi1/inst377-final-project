@@ -14,9 +14,6 @@ npm install
 Run the Application
 node server.js
 
-Then open in your browser:
-
-http://localhost:3000/dashboard.html
 API Endpoints
 GET /customers
 
