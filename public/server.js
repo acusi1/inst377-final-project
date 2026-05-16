@@ -5,7 +5,6 @@ const cors = require('cors');
 const { createClient } = require('@supabase/supabase-js');
 const { isValidStateAbbreviation } = require('usa-state-validator');
 
-// ✅ FIX: node-fetch compatibility (safe for all Node versions)
 const fetch = require('node-fetch');
 
 const app = express();
