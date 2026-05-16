@@ -6,9 +6,9 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.0.0",
     "cors": "^2.8.5",
     "express": "^4.18.2",
+    "@supabase/supabase-js": "^2.0.0",
     "usa-state-validator": "^1.0.0"
   }
 }
