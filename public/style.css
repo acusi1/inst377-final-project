@@ -1,13 +1,67 @@
 body {
-  font-family: Arial;
-  margin: 20px;
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+  margin: 0;
+  padding: 20px;
 }
 
+.container {
+  max-width: 900px;
+  margin: auto;
+}
+
+h1 {
+  margin-bottom: 5px;
+}
+
+p {
+  color: #555;
+}
+
+/* NAV */
+nav {
+  margin: 10px 0 20px 0;
+}
+
+nav a {
+  margin-right: 10px;
+  text-decoration: none;
+  font-weight: bold;
+  color: #333;
+}
+
+/* CARDS */
+.card {
+  background: white;
+  padding: 20px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* INPUTS */
 input {
   margin: 5px;
-  padding: 5px;
+  padding: 8px;
+  width: 180px;
 }
 
+/* BUTTONS */
 button {
   margin: 5px;
+  padding: 8px 12px;
+  cursor: pointer;
+  border: none;
+  background: #2d6cdf;
+  color: white;
+  border-radius: 5px;
+}
+
+button:hover {
+  background: #1f4fb2;
+}
+
+/* LIST */
+ul {
+  padding-left: 20px;
 }

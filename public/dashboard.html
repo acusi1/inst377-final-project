@@ -4,35 +4,53 @@
   <title>Customer Dashboard</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<h1>Customer Dashboard</h1>
+<div class="container">
 
-<nav>
-  <a href="/index.html">Home</a>
-  <a href="/about.html">About</a>
-  <a href="/dashboard.html">Dashboard</a>
-</nav>
+  <h1>Customer Dashboard</h1>
+  <p>Manage customer records and view live data from the system.</p>
 
-<hr>
+  <nav>
+    <a href="/index.html">Home</a>
+    <a href="/about.html">About</a>
+    <a href="/dashboard.html">Dashboard</a>
+  </nav>
 
-<h2>Add Customer</h2>
+  <!-- ADD CUSTOMER -->
+  <div class="card">
+    <h2>Add Customer</h2>
 
-<input id="firstName" placeholder="First Name">
-<input id="lastName" placeholder="Last Name">
-<input id="state" placeholder="State (MD)">
+    <input id="firstName" placeholder="First Name">
+    <input id="lastName" placeholder="Last Name">
+    <input id="state" placeholder="State (MD)">
 
-<button onclick="addCustomer()">Add Customer</button>
+    <br>
 
-<h2>Customers</h2>
-<button onclick="loadCustomers()">Load Customers</button>
-<ul id="customerList"></ul>
+    <button onclick="addCustomer()">Add Customer</button>
+  </div>
 
-<h2>Random Fact</h2>
-<button onclick="getFact()">Get Fact</button>
-<p id="fact"></p>
+  <!-- CUSTOMER LIST -->
+  <div class="card">
+    <h2>Customers</h2>
 
-<!-- MUST be at bottom -->
+    <button onclick="loadCustomers()">Load Customers</button>
+
+    <ul id="customerList"></ul>
+  </div>
+
+  <!-- EXTERNAL API -->
+  <div class="card">
+    <h2>Random Fact</h2>
+
+    <button onclick="getFact()">Get Fact</button>
+
+    <p id="fact"></p>
+  </div>
+
+</div>
+
 <script src="./dashboard.js"></script>
 
 </body>
